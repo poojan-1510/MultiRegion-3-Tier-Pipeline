@@ -6,26 +6,26 @@ This project implements a production-grade **3-tier application delivery platfor
 
 ## 🔷 Architecture Overview
 
-### ✅ Three-Tier Application
+### Three-Tier Application
 - **Frontend Tier** – UI (React / Angular / Vue)
 - **Backend Tier** – API service (Node / Python / Java / etc.)
 - **Database Tier** – schema, migrations, seed data
 
-### ✅ CI Pipeline (GitLab CI)
+### CI Pipeline (GitLab CI)
 Responsible only for:
 - building container images
 - running tests
 - tagging artifacts
 - pushing images to Amazon ECR
 
-### ✅ CD Pipeline (GitLab CD)
+### CD Pipeline (GitLab CD)
 Responsible only for:
 - consuming immutable image tags
 - updating task definitions
 - deploying to AWS ECS Fargate
 - promoting releases across environments (dev → stage → prod)
 
-### ✅ Infrastructure-as-Code
+### Infrastructure-as-Code
 - **Terraform** provisions:
   - VPC networking
   - ECS clusters & services
@@ -34,14 +34,14 @@ Responsible only for:
   - IAM roles and policies
   - multi-region deployment
 
-### ✅ Configuration & Ops Automation
+### Configuration & Ops Automation
 - **Ansible** used for:
   - DR promotion workflows
   - smoke testing
   - operational runbooks
   - configuration not suited for Terraform
 
-### ✅ Multi-Region Disaster Recovery
+### Multi-Region Disaster Recovery
 - warm standby DR region
 - ECR image replication
 - ECS failover readiness
@@ -50,15 +50,15 @@ Responsible only for:
 
 ---
 
-## 🧩 Key Design Principles
+## Key Design Principles
 
-✅ CI and CD fully separated  
-✅ Immutable container images in ECR  
-✅ No build logic inside deployment pipeline  
-✅ Tier isolation through networking & security groups  
-✅ Backend not exposed publicly  
-✅ Database never reachable from internet  
-✅ Multi-region resilience without active-active complexity  
+CI and CD fully separated  
+Immutable container images in ECR  
+No build logic inside deployment pipeline  
+Tier isolation through networking & security groups  
+Backend not exposed publicly  
+Database never reachable from internet  
+Multi-region resilience without active-active complexity  
 
 ---
 
@@ -100,11 +100,11 @@ Responsible only for:
 
 ## ✅ Intended Use Cases
 
-✅ portfolio / resume showcase  
-✅ learning CI/CD at enterprise level  
-✅ AWS DevOps demonstration  
-✅ infrastructure automation practice  
-✅ disaster recovery architecture example  
+portfolio / resume showcase  
+learning CI/CD at enterprise level  
+AWS DevOps demonstration  
+infrastructure automation practice  
+disaster recovery architecture example  
 
 ---
 

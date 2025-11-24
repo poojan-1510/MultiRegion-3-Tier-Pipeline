@@ -117,17 +117,3 @@ disaster recovery architecture example
 - GitOps controllers (ArgoCD / Flux)  
 
 ---
-
-## 🧭 Status
-
-✅ Repository structure scaffolded  
-⬜ sample frontend  
-⬜ sample backend  
-⬜ CI pipeline config  
-⬜ CD pipeline config  
-⬜ Terraform modules  
-⬜ DR automation scripts  
-
-
----
-

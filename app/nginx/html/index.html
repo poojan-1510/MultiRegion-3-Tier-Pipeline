@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Docker Project</title>
+</head>
+
+<body style="background-color:rgb(49, 214, 220); text-align:center;">
+    <p>Welcome to my Docker Project!</p>
+
+    <p>Today's Date and Time is:
+        <span id="date-time"></span>
+    </p>
+
+    <p>Message from MySQL:
+        <span id="mysql-message"></span>
+    </p>
+
+    <script>
+        // Date display
+        document.getElementById('date-time').innerHTML =
+            new Date().toLocaleString();
+
+        // Fetch message from backend API
+        fetch('/api')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('mysql-message').innerHTML =
+                    data.message;
+            })
+            .catch(err => {
+                document.getElementById('mysql-message').innerHTML =
+                    'Error contacting backend';
+            });
+    </script>
+</body>
+
+</html>

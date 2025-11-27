@@ -1,0 +1,42 @@
+name: Build and Push Backend Docker Image to ECR
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::523026302352:role/project2-github-oidc-role
+          aws-region: us-east-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build Docker image
+        run: |
+          docker build -f docker/backend/Dockerfile -t project2-backend:latest .
+
+      - name: Tag Docker image for ECR
+        run: |
+          ECR_URI=523026302352.dkr.ecr.us-east-1.amazonaws.com/project2-backend
+          docker tag project2-backend:latest $ECR_URI:latest
+
+      - name: Push Docker image to ECR
+        run: |
+          ECR_URI=523026302352.dkr.ecr.us-east-1.amazonaws.com/project2-backend
+          docker push $ECR_URI:latest

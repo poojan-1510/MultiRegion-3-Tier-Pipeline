@@ -1,0 +1,41 @@
+# Project Structure – Multi-Region 3-Tier CI/CD Platform
+
+/project
+    /.github/
+        /workflows/
+            build.yml
+            deploy.yml
+    /app/
+        /frontend/ 
+            /html/
+                index.html
+        /backend/ 
+            package.json
+            server.js
+    /docker/
+        /frontend/ 
+            Dockerfile
+        /backend/ 
+            Dockerfile
+            
+
+    /deploy/ # CD pipeline (deploy using image tags)
+        /environments/
+            /dev/
+            /stage/
+            /prod/
+    /terraform/
+        /modules/xw
+            /network/ # VPC, subnets, NAT, routing
+            /ecs/ # ECS cluster + services for 3 tiers
+            /alb/ # Public ALB (frontend) + internal ALB (backend)
+            /rds/ # Database tier if using RDS/Aurora
+            /iam/ # IAM roles, policies, task execution roles
+        /regions/
+            /primary/ # Primary AWS region deployment
+            /dr/ # DR region infra (warm standby)
+
+    /docs/
+        architecture.md
+        dr-strategy.md
+        runbooks.md

@@ -1,0 +1,6 @@
+Backend → ECS + ECR
+Frontend → S3 + CloudFront
+DB → RDS
+Secrets → Secrets Manager
+Infrastructure → Terraform
+Builds → GitHub Actions

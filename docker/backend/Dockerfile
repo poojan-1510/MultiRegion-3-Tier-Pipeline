@@ -2,7 +2,8 @@ FROM node:20 AS installer
 
 WORKDIR /app
 
-COPY ./backend/package*.json ./
+# Correct path
+COPY ./app/backend/package*.json ./
 
 RUN npm install --production
 
@@ -12,7 +13,8 @@ WORKDIR /app
 
 COPY --from=installer /app/node_modules ./node_modules
 
-COPY . .
+# Correct path
+COPY ./app/backend .
 
 EXPOSE 3001
 

@@ -21,7 +21,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::523026302352:role/project2-github-oidc-role
-          aws-region: us-east-2
+          aws-region: us-east-2 # ✔ your ECR region
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -33,10 +33,10 @@ jobs:
 
       - name: Tag Docker image for ECR
         run: |
-          ECR_URI=523026302352.dkr.ecr.us-east-1.amazonaws.com/project2-backend
+          ECR_URI=523026302352.dkr.ecr.us-east-2.amazonaws.com/project2-backend
           docker tag project2-backend:latest $ECR_URI:latest
 
       - name: Push Docker image to ECR
         run: |
-          ECR_URI=523026302352.dkr.ecr.us-east-1.amazonaws.com/project2-backend
+          ECR_URI=523026302352.dkr.ecr.us-east-2.amazonaws.com/project2-backend
           docker push $ECR_URI:latest

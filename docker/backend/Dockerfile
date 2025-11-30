@@ -1,8 +1,8 @@
-FROM node:20-alpine AS installer
+FROM node:20 AS installer
 
 WORKDIR /app
 
-COPY app/backend/package*.json ./
+COPY ./backend/package*.json ./
 
 RUN npm install --production
 
@@ -12,8 +12,8 @@ WORKDIR /app
 
 COPY --from=installer /app/node_modules ./node_modules
 
-COPY app/backend/ .
+COPY . .
 
-EXPOSE 3000
+EXPOSE 3001
 
 CMD ["node", "server.js"]

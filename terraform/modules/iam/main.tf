@@ -157,11 +157,9 @@ resource "aws_iam_role_policy_attachment" "ecr_ci_policy_attach" {
   role       = aws_iam_role.ecr_ci_role.name
   policy_arn = aws_iam_policy.ecr_ci_policy.arn
 }
-
-
 resource "aws_iam_role_policy" "github_oidc_ecs_permissions" {
   name = "github-oidc-ecs-permissions"
-  role = aws_iam_role.ecr_ci_role.name # or your OIDC role
+  role = aws_iam_role.project2_github_oidc_role.name
 
   policy = jsonencode({
     Version = "2012-10-17",
@@ -173,10 +171,19 @@ resource "aws_iam_role_policy" "github_oidc_ecs_permissions" {
           "ecs:UpdateService",
           "ecs:DescribeServices",
           "ecs:DescribeTaskDefinition",
-          "ecs:ListTasks",
-          "iam:PassRole"
+          "ecs:ListTasks"
         ],
         Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "iam:PassRole"
+        ],
+        Resource = [
+          "arn:aws:iam::523026302352:role/project2-ecs-exec-role",
+          "arn:aws:iam::523026302352:role/project2-ecs-task-role"
+        ]
       }
     ]
   })

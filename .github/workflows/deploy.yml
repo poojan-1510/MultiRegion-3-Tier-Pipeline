@@ -23,13 +23,12 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::523026302352:role/project2-ecr-ci-role
           aws-region: us-east-2
-
       - name: Update ECS task definition
         id: ecs-task
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: docker/backend/ecs-task-definition.json
-          container-name: project2-container
+          container-name: project2-container # must match Terraform container name
           image: 523026302352.dkr.ecr.us-east-2.amazonaws.com/project2-backend:latest
 
       - name: Deploy to ECS service

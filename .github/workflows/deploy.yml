@@ -39,3 +39,7 @@ jobs:
           service: project2-backend-service
           task-definition: ${{ steps.ecs-task.outputs.task-definition }}
           wait-for-service-stability: true
+
+      - name: Output ALB DNS
+        run: |
+          echo "Frontend is accessible at: $(aws elbv2 describe-load-balancers --names project2-alb --query 'LoadBalancers[0].DNSName' --output text --region us-east-2)"

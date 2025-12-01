@@ -1,25 +1,32 @@
 {
     "family": "project2-backend-task",
     "networkMode": "awsvpc",
-    "executionRoleArn": "arn:aws:iam::523026302352:role/project2-ecs-exec-role",
-    "taskRoleArn": "arn:aws:iam::523026302352:role/project2-ecs-task-role",
     "requiresCompatibilities": [
         "FARGATE"
     ],
     "cpu": "256",
     "memory": "512",
+    "executionRoleArn": "arn:aws:iam::523026302352:role/project2-ecs-exec-role",
+    "taskRoleArn": "arn:aws:iam::523026302352:role/project2-ecs-task-role",
     "containerDefinitions": [
         {
             "name": "project2-backend",
-            "image": "PLACEHOLDER_IMAGE",
+            "image": "PLACEHOLDER",
+            "essential": true,
             "portMappings": [
                 {
-                    "containerPort": 3000,
-                    "protocol": "tcp"
+                    "containerPort": 80,
+                    "hostPort": 80
                 }
             ],
-            "essential": true,
-            "environment": []
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/project2-backend",
+                    "awslogs-region": "us-east-2",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
         }
     ]
 }

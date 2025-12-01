@@ -1,0 +1,25 @@
+{
+    "family": "project2-backend-task",
+    "networkMode": "awsvpc",
+    "executionRoleArn": "arn:aws:iam::523026302352:role/project2-ecs-exec-role",
+    "taskRoleArn": "arn:aws:iam::523026302352:role/project2-ecs-task-role",
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "256",
+    "memory": "512",
+    "containerDefinitions": [
+        {
+            "name": "project2-backend",
+            "image": "PLACEHOLDER_IMAGE",
+            "portMappings": [
+                {
+                    "containerPort": 3000,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": []
+        }
+    ]
+}

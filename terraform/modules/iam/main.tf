@@ -145,7 +145,11 @@ resource "aws_iam_policy" "ecr_ci_policy" {
           "ecr:CompleteLayerUpload",
           "ecr:UploadLayerPart",
           "ecr:BatchGetImage",
-          "ecr:PutImage"
+          "ecr:PutImage",
+          "elasticloadbalancing:DescribeLoadBalancers",
+          "elasticloadbalancing:DescribeTargetGroups",
+          "elasticloadbalancing:DescribeListeners"
+
         ]
         Resource = "*"
       }

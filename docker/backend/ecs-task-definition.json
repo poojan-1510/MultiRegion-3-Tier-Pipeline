@@ -10,13 +10,19 @@
     "taskRoleArn": "arn:aws:iam::523026302352:role/project2-ecs-task-role",
     "containerDefinitions": [
         {
-            "name": "project2-container",
+            "name": "project2-backend-container",
             "image": "PLACEHOLDER",
             "essential": true,
             "portMappings": [
                 {
                     "containerPort": 3000,
-                    "hostPort": 3000
+                    "protocol": "tcp"
+                }
+            ],
+            "environment": [
+                {
+                    "name": "ENVIRONMENT",
+                    "value": "production"
                 }
             ],
             "logConfiguration": {

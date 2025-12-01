@@ -1,10 +1,17 @@
 locals {
-  name_prefix = replace(lower(var.app_name), " ", "-")
+  app_name    = "Project2 Backend"
+  name_prefix = "project2-backend" # fixed prefix for consistency
 }
 
-# ECS Cluster
+
+resource "aws_cloudwatch_log_group" "backend" {
+  name              = "/ecs/${local.name_prefix}"
+  retention_in_days = 30
+}
+
+
 resource "aws_ecs_cluster" "this" {
-  name = var.cluster_name != null ? var.cluster_name : "${local.name_prefix}-cluster"
+  name = "project2-cluster"
 
   tags = merge(
     { Name = "project2-cluster" },
@@ -12,29 +19,24 @@ resource "aws_ecs_cluster" "this" {
   )
 }
 
-resource "aws_cloudwatch_log_group" "ecs" {
-  name              = "/ecs/${local.name_prefix}"
-  retention_in_days = 30
-}
-
 data "aws_region" "current" {}
 
-# Task Definition
-resource "aws_ecs_task_definition" "task" {
-  family                   = "project2-task"
+resource "aws_ecs_task_definition" "backend" {
+  family                   = "${local.name_prefix}-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-
-  cpu    = var.cpu
-  memory = var.memory
+  cpu                      = var.cpu
+  memory                   = var.memory
 
   execution_role_arn = var.execution_role_arn
   task_role_arn      = var.task_role_arn
 
   container_definitions = jsonencode([
     {
-      name  = "project2-container"
+      name  = "${local.name_prefix}-container"
       image = var.container_image
+
+      essential = true
 
       portMappings = [
         {
@@ -60,10 +62,11 @@ resource "aws_ecs_task_definition" "task" {
   ])
 }
 
-resource "aws_ecs_service" "service" {
+
+resource "aws_ecs_service" "backend" {
   name            = "${local.name_prefix}-service"
   cluster         = aws_ecs_cluster.this.id
-  task_definition = aws_ecs_task_definition.task.arn
+  task_definition = aws_ecs_task_definition.backend.arn
   desired_count   = var.desired_count
   launch_type     = "FARGATE"
 
@@ -87,7 +90,7 @@ resource "aws_ecs_service" "service" {
 
   load_balancer {
     target_group_arn = var.target_group_arn
-    container_name   = "project2-container"
+    container_name   = "${local.name_prefix}-container"
     container_port   = var.container_port
   }
 
@@ -95,5 +98,4 @@ resource "aws_ecs_service" "service" {
     ignore_changes = [desired_count]
   }
 
-  tags = var.tags
 }

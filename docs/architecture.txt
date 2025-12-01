@@ -25,12 +25,15 @@
             /stage/
             /prod/
     /terraform/
-        /modules/xw
+        /modules/
             /network/ # VPC, subnets, NAT, routing
             /ecs/ # ECS cluster + services for 3 tiers
             /alb/ # Public ALB (frontend) + internal ALB (backend)
             /rds/ # Database tier if using RDS/Aurora
             /iam/ # IAM roles, policies, task execution roles
+            /security_groups/
+            /cloudfront/
+            /s3/
         /regions/
             /primary/ # Primary AWS region deployment
             /dr/ # DR region infra (warm standby)

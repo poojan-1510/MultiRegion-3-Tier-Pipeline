@@ -1,0 +1,41 @@
+name: Deploy Backend to ECS Fargate
+
+on:
+  workflow_run:
+    workflows: ["Build and Push Backend Docker Image to ECR"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::523026302352:role/project2-github-oidc-role
+          aws-region: us-east-2
+
+      - name: Update ECS task definition
+        id: ecs-task
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: docker/backend/ecs-task-definition.json
+          container-name: project2-backend
+          image: 523026302352.dkr.ecr.us-east-2.amazonaws.com/project2-backend:latest
+
+      - name: Deploy to ECS service
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          cluster: project2-cluster
+          service: project2-backend-service
+          task-definition: ${{ steps.ecs-task.outputs.task-definition }}
+          wait-for-service-stability: true

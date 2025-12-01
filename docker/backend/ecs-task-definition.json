@@ -10,7 +10,7 @@
     "taskRoleArn": "arn:aws:iam::523026302352:role/project2-ecs-task-role",
     "containerDefinitions": [
         {
-            "name": "project2-backend",
+            "name": "project2-container",
             "image": "PLACEHOLDER",
             "essential": true,
             "portMappings": [

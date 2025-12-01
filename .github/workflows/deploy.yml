@@ -40,7 +40,7 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           cluster: project2-cluster
-          service: project2-service
+          service: project2-backend-service
           task-definition: ${{ steps.ecs-task.outputs.task-definition }}
           wait-for-service-stability: true
 

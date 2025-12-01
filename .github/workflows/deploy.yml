@@ -29,7 +29,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: docker/backend/ecs-task-definition.json
-          container-name: project2-backend
+          container-name: project2-container
           image: 523026302352.dkr.ecr.us-east-2.amazonaws.com/project2-backend:latest
 
       - name: Deploy to ECS service

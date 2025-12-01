@@ -22,3 +22,7 @@ output "alb_arn" {
   value       = module.alb.alb_arn
   description = "ARN of the Application Load Balancer"
 }
+
+output "ecs_cluster_name" {
+  value = module.ecs.cluster_name
+}

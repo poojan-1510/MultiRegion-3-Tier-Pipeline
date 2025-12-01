@@ -9,3 +9,7 @@ output "service_name" {
 output "task_definition_arn" {
   value = aws_ecs_task_definition.task.arn
 }
+
+output "cluster_name" {
+  value = aws_ecs_cluster.this.name
+}

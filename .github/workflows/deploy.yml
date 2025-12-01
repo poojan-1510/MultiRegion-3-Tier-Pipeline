@@ -35,8 +35,8 @@ jobs:
       - name: Deploy to ECS service
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          cluster: project2-cluster
-          service: project2-backend-service
+          cluster: Project2-cluster
+          service: Project2-service
           task-definition: ${{ steps.ecs-task.outputs.task-definition }}
           wait-for-service-stability: true
 

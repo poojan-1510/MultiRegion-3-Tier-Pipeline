@@ -7,7 +7,7 @@ resource "aws_ecs_cluster" "this" {
   name = var.cluster_name != null ? var.cluster_name : "${local.name_prefix}-cluster"
 
   tags = merge(
-    { Name = "${local.name_prefix}-cluster" },
+    { Name = "project2-cluster" },
     var.tags
   )
 }
@@ -21,7 +21,7 @@ data "aws_region" "current" {}
 
 # Task Definition
 resource "aws_ecs_task_definition" "task" {
-  family                   = "${local.name_prefix}-task"
+  family                   = "project2-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
 
@@ -33,7 +33,7 @@ resource "aws_ecs_task_definition" "task" {
 
   container_definitions = jsonencode([
     {
-      name  = "${local.name_prefix}-container"
+      name  = "project2-container"
       image = var.container_image
 
       portMappings = [
@@ -87,7 +87,7 @@ resource "aws_ecs_service" "service" {
 
   load_balancer {
     target_group_arn = var.target_group_arn
-    container_name   = "${local.name_prefix}-container"
+    container_name   = "project2-container"
     container_port   = var.container_port
   }
 

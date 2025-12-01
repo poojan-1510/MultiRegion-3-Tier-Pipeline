@@ -3,13 +3,17 @@ locals {
   name_prefix = "project2-backend" # fixed prefix for consistency
 }
 
-
+# ----------------------------
+# CloudWatch Log Group
+# ----------------------------
 resource "aws_cloudwatch_log_group" "backend" {
   name              = "/ecs/${local.name_prefix}"
   retention_in_days = 30
 }
 
-
+# ----------------------------
+# ECS Cluster
+# ----------------------------
 resource "aws_ecs_cluster" "this" {
   name = "project2-cluster"
 
@@ -21,8 +25,11 @@ resource "aws_ecs_cluster" "this" {
 
 data "aws_region" "current" {}
 
+# ----------------------------
+# ECS Task Definition
+# ----------------------------
 resource "aws_ecs_task_definition" "backend" {
-  family                   = "${local.name_prefix}-task"
+  family                   = "project2-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.cpu
@@ -33,7 +40,7 @@ resource "aws_ecs_task_definition" "backend" {
 
   container_definitions = jsonencode([
     {
-      name  = "${local.name_prefix}-container"
+      name  = "${local.name_prefix}-container" # "project2-backend-container"
       image = var.container_image
 
       essential = true
@@ -62,9 +69,11 @@ resource "aws_ecs_task_definition" "backend" {
   ])
 }
 
-
+# ----------------------------
+# ECS Service
+# ----------------------------
 resource "aws_ecs_service" "backend" {
-  name            = "${local.name_prefix}-service"
+  name            = "project2-service"
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.backend.arn
   desired_count   = var.desired_count
@@ -90,7 +99,7 @@ resource "aws_ecs_service" "backend" {
 
   load_balancer {
     target_group_arn = var.target_group_arn
-    container_name   = "${local.name_prefix}-container"
+    container_name   = "${local.name_prefix}-container" # match task definition
     container_port   = var.container_port
   }
 
@@ -98,4 +107,24 @@ resource "aws_ecs_service" "backend" {
     ignore_changes = [desired_count]
   }
 
+  tags = var.tags
+}
+
+# ----------------------------
+# Outputs
+# ----------------------------
+output "ecs_cluster_name" {
+  value = aws_ecs_cluster.this.name
+}
+
+output "ecs_service_name" {
+  value = aws_ecs_service.backend.name
+}
+
+output "ecs_task_definition_arn" {
+  value = aws_ecs_task_definition.backend.arn
+}
+
+output "cloudwatch_log_group" {
+  value = aws_cloudwatch_log_group.backend.name
 }

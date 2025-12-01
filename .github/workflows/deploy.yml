@@ -15,40 +15,41 @@ jobs:
       contents: read
 
     steps:
-      # Step 1: Checkout repo
+      # Checkout the repo
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Configure AWS credentials via OIDC
+      # Configure AWS credentials via OIDC
       - name: Configure AWS credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::523026302352:role/project2-ecr-ci-role
           aws-region: us-east-2
 
-      # Step 3: Render ECS task definition
-      - name: Update ECS task definition
+      # Update ECS task definition with the new image
+      - name: Render ECS task definition
         id: ecs-task
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: docker/backend/ecs-task-definition.json
-          container-name: project2-backend-container # must match JSON container name
+          container-name: project2-backend-container # Must match Terraform container name
           image: 523026302352.dkr.ecr.us-east-2.amazonaws.com/project2-backend:latest
 
-      # Step 4: Deploy to ECS service
+      # Deploy the task definition to ECS
       - name: Deploy to ECS service
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          cluster: Project2-cluster
+          cluster: project2-cluster
           service: project2-service
           task-definition: ${{ steps.ecs-task.outputs.task-definition }}
           wait-for-service-stability: true
 
-      # Step 5: Output ALB DNS
+      # Output the ALB DNS (optional)
       - name: Output ALB DNS
         run: |
-          echo "Backend is accessible at: $(aws elbv2 describe-load-balancers \
+          DNS=$(aws elbv2 describe-load-balancers \
             --names project2-alb \
             --query 'LoadBalancers[0].DNSName' \
             --output text \
-            --region us-east-2)"
+            --region us-east-2)
+          echo "Backend is accessible at: $DNS"

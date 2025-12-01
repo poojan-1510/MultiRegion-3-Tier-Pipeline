@@ -159,7 +159,7 @@ resource "aws_iam_role_policy_attachment" "ecr_ci_policy_attach" {
 }
 resource "aws_iam_role_policy" "github_oidc_ecs_permissions" {
   name = "github-oidc-ecs-permissions"
-  role = aws_iam_role.project2_github_oidc_role.name
+  role = aws_iam_role.ecr_ci_role.name
 
   policy = jsonencode({
     Version = "2012-10-17",
